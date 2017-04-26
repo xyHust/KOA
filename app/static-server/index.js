@@ -5,6 +5,7 @@
 const path = require('path');
 const fs = require('fs');
 const mime = require('mime');
+
 const getPath = (url) => {
     return path.resolve(process.cwd(), 'public', `./${url}`)
 }
@@ -12,12 +13,8 @@ const getPath = (url) => {
 const readFile  = (_path) =>{
     return new Promise((resolve,reject)=>{
         fs.readFile(_path,(error,data)=>{
-            if(error) {
-                reject(error);
-            }else{  
-                resolve(data);
-            }
- 
+            if(error)reject(`NOT FOUND ${err.stack}`); 
+            resolve(data);
         })
     })
 }
@@ -34,15 +31,14 @@ const StaticFun = () => {
             let _path = getPath(url);
             let _type = mime.lookup(_path);
             ctx.type = _type;
-            // let body = fs.readFileSync(_path);
-            // debugger;
             ctx.body = fs.readFileSync(_path);
-            let body = await readFile(_path)
-            return ctx.body = body ;
+            // let body = await readFile(_path)
             // debugger;
+            // ctx.body = body ;
         }
     }
 }
+
 module.exports = StaticFun
 
 
