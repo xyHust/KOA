@@ -17,14 +17,14 @@
 
     const urlParser = () =>{
         return async (ctx,next)=>{
-            let {url,method,req} = ctx;
+            let {path,method,req} = ctx;
             method = method.toLowerCase();
             if( method === 'post'){
                ctx.type = 'application/json';
                let data = await getData(req,ctx);
                ctx.body = data;
             }else{
-                next();
+               await next();
             }
         }
     }

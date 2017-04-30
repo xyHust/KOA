@@ -6,35 +6,25 @@ const path = require('path');
 const fs = require('fs');
 const mime = require('mime');
 
-const getPath = (url) => {
-    return path.resolve(process.cwd(), 'public', `./${url}`)
-}
-
-const readFile  = (_path) =>{
-    return new Promise((resolve,reject)=>{
-        fs.readFile(_path,(error,data)=>{
-            if(error)reject(`NOT FOUND ${err.stack}`); 
-            resolve(data);
-        })
-    })
+const getPath = (Path) => {
+    return path.resolve(process.cwd(), 'public', `./${Path}`)
 }
 
 const StaticFun = () => {
     return async (ctx, next) => {
-        let {url} = ctx;
-        if (url.match('action')) {
-            next()
+        let {path} = ctx;
+        if (path.match('action')&& !path.match(/\./)) {
+           await next();
         } else {
-            if (url === '/') {
-                url = '/index.html'
-            }
-            let _path = getPath(url);
+            let _path = getPath(path);
             let _type = mime.lookup(_path);
-            ctx.type = _type;
+            // ctx.type = _type;
+            ctx.set({
+                "Content-Type":_type,
+                'X-Power-By':'Node.js'
+            });
             ctx.body = fs.readFileSync(_path);
-            // let body = await readFile(_path)
-            // debugger;
-            // ctx.body = body ;
+            await next()
         }
     }
 }
