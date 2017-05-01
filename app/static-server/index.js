@@ -18,7 +18,6 @@ const StaticFun = () => {
         } else {
             let _path = getPath(path);
             let _type = mime.lookup(_path);
-            // ctx.type = _type;
             ctx.set({
                 "Content-Type":_type,
                 'X-Power-By':'Node.js'

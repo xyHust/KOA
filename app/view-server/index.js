@@ -9,12 +9,19 @@ const ejs = require('ejs');
 const fs = require('fs');
 const Path = require('path');
 const urlrewriteMap = require('./urlrewrite');
+
 module.exports = () =>{
     return async (ctx,next) =>{
-        let {path} = ctx;
+        let {path,cookies} = ctx;
+        let hasUser;
+        if(cookies.get('authd')){
+            hasUser = true;
+        }else{
+            hasUser = false;
+        }
         if(!path.match('action') || !path.match(/\./)){
             let viewPath = Path.resolve(__dirname,'ejs');
-            let ejsName = urlrewriteMap[path];
+            let ejsName = urlrewriteMap[path];//对照映射表
             if(ejsName){
                 let layoutPath = Path.resolve(viewPath,'layout.ejs');
                 let layoutHtml = fs.readFileSync(layoutPath,'utf8');//谨记每次通过readFile输出的都为buffer，每次都忽略，谨记
@@ -28,16 +35,16 @@ module.exports = () =>{
                 })
                 ctx.body = render({
                     templateName:ejsName+'.ejs',
-                    hasUser:false
+                    hasUser
                 });               
             }else{
-                ctx.set({
-                    'Location':'/',
-                    'Status':302,
-                    'StatusMessage':'redirect'
-                })
-                // ctx.status = 302;
-                // ctx.redirect('/');
+                // ctx.set({
+                //     'Location':'/',
+                //     'Status':302,
+                //     'StatusMessage':'redirect'
+                // })
+                ctx.status = 302;
+                ctx.redirect('/');
                 ctx.body = 'Redirecting';
             }
         }else{
