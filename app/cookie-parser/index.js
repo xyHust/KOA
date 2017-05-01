@@ -8,6 +8,11 @@ module.exports = ()=>{
     return async(ctx,next)=>{
         let {path , cookies} = ctx;
         let cookieStr = (time) =>`authd=Sheldon;Max-Age=${time};HttpOnly;`;
+        if(cookies.get('authd')){
+            ctx.set({
+                'Set-Cookie':cookieStr(50)
+            })
+        }
         if(whiteName.indexOf(path)>-1){
             ctx.set({
                 'Set-Cookie':cookieStr(50)
