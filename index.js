@@ -12,13 +12,23 @@ const app = new Koa();
 
 //urlParser ==> apiServer ==> viewServer ==> staticFun
 //中间件
-app.use(cookieParser());
 app.use(urlParser());
 app.use(apiServer());
+app.use(cookieParser());
 app.use(viewServer());
 app.use(staticFun());
 //
 
+//链接mongoDB数据库
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/blogDB');
+mongoose.connection.on('error',()=>{
+    console.log('error happen for db')
+}).once('open',()=>{
+    console.log('we are connect')
+})
 
 app.listen(3000);
 console.log('app started at port 3000...');
+

@@ -13,10 +13,11 @@ const urlrewriteMap = require('./urlrewrite');
 module.exports = () =>{
     return async (ctx,next) =>{
         let {path,cookies} = ctx;
+        let hasUser;
         if(cookies.get('authd')){
-           let hasUser = true;
+            hasUser = true;
         }else{
-           let hasUser = false;
+            hasUser = false;
         }
         if(!path.match('action') || !path.match(/\./)){
             let viewPath = Path.resolve(__dirname,'ejs');

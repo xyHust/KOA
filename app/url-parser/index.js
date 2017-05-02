@@ -9,7 +9,7 @@
                     data.push(chunk);
                 }).on('end',()=>{
                     let endData = Buffer.concat(data).toString();
-                    ctx.body = JSON.parse(endData);
+                    endData = JSON.parse(endData);
                     resolve(endData);
             })
         })

@@ -3,21 +3,30 @@
 *apiServer
 */
 
+let Router = require('./router');
+
+Router.get('/categoryList.action',ctx=>{
+    return {a:2}
+})
+
+const handlerData = (ctx) =>{
+    return new Promise((resolve,reject)=>{
+        return Router.routes(ctx).then(data=>{
+            resolve(data);
+        })
+    })
+}
+
 const apiServer = ()=>{
     return async (ctx,next) =>{
         let {path ,method} = ctx; 
-        let urlMap = {
-            '/shop.action': ['Macbook', 'Iphone8', 'nokia', 'book'],
-            '/Users.action': ['SheldonYee', '21', 'senior']
-        }
-        method = method.toLocaleLowerCase()
         if(path.match('.action')){
-            if(method === 'get'){
-                ctx.type = "application/json";
-                ctx.body = JSON.stringify(urlMap[path]);
-            }else{
-               await next()
-            }
+            ctx.set({
+                'Content-Type':'application/json',
+                'X-power-by':'Node.js'
+            })
+           let body =  await handlerData(ctx);
+           ctx.body = JSON.stringify(body);
         }else{
             await next()
         }

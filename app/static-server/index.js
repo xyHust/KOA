@@ -20,7 +20,7 @@ const StaticFun = () => {
             let _type = mime.lookup(_path);
             ctx.set({
                 "Content-Type":_type,
-                'X-Power-By':'Node.js'
+                'X-power-by':'Node.js'
             });
             ctx.body = fs.readFileSync(_path);
             await next()
