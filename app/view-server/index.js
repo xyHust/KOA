@@ -19,7 +19,6 @@ module.exports = () => {
         } else {
             hasUser = false;
         }
-        debugger;
         if (!path.match('action') && !path.match(/\./)) {
             let viewPath = Path.resolve(__dirname, 'ejs');
             let ejsName = urlrewriteMap[path]; //对照映射表

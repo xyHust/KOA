@@ -4,9 +4,7 @@
 */
 
 let Router = require('./ajax');
-// Router.get('/categoryList.action',ctx=>{
-//     return {a:2}
-// })//测试
+
 
 const handlerData = (ctx) =>{
     return new Promise((resolve,reject)=>{
