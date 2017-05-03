@@ -27,9 +27,13 @@ class Router {
         method = method.toLowerCase();
         if(method === 'get' || method ==='post'){
              let handler = this.roterMap[method][path];
-             return Promise.resolve(handler(ctx));
+             if(handler){
+                return Promise.resolve(handler(ctx));
+             }else{
+                return Promise.resolve();
+             }
         }else{
-             return  Promise.resolve()
+             return  Promise.resolve();
         }
     }
 }

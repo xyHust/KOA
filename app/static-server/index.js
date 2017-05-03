@@ -16,6 +16,7 @@ const StaticFun = () => {
         if (path.match('action')&& !path.match(/\./)) {
            await next();
         } else {
+            debugger;
             let _path = getPath(path);
             let _type = mime.lookup(_path);
             ctx.set({

@@ -13,10 +13,11 @@ const app = new Koa();
 //urlParser ==> apiServer ==> viewServer ==> staticFun
 //中间件
 app.use(urlParser());
-app.use(apiServer());
 app.use(cookieParser());
+app.use(apiServer());
 app.use(viewServer());
 app.use(staticFun());
+
 //
 
 //链接mongoDB数据库

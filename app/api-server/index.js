@@ -3,19 +3,22 @@
 *apiServer
 */
 
-let Router = require('./router');
-
-Router.get('/categoryList.action',ctx=>{
-    return {a:2}
-})
+let Router = require('./ajax');
+// Router.get('/categoryList.action',ctx=>{
+//     return {a:2}
+// })//测试
 
 const handlerData = (ctx) =>{
     return new Promise((resolve,reject)=>{
         return Router.routes(ctx).then(data=>{
-            resolve(data);
+            if(data){
+                resolve(data);
+            }else{
+                resolve('没有相关数据')
+            }
         })
     })
-}
+}//通过mongoose去操作MongoDB数据库返回数据给前端
 
 const apiServer = ()=>{
     return async (ctx,next) =>{
